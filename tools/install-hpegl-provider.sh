@@ -5,6 +5,7 @@ set -e
 os="linux"
 arch="amd64"
 repo="zachovich/release"
+linux_hpegl_dir="${HOME}/.local/share/terraform/plugins/registry.terraform.io/hewlettpackard/hpegl"
 
 get_latest_release () {
   local release_url="https://api.github.com/repos/${repo}/releases/latest"
@@ -12,8 +13,8 @@ get_latest_release () {
 }
 
 download_and_extract () {
-  local dest_dir="${HOME}/.local/share/terraform/plugins/registry.terraform.io/hewlettpackard/hpegl/${VERSION}/linux_amd64/"
-  local hpegl_zip="terraform-provider-hpegl_${VERSION}_${os}_${arch}.zip"
+  local dest_dir="${linux_hpegl_dir}/${version_number}/${os}_${arch}/"
+  local hpegl_zip="terraform-provider-hpegl_${version_number}_${os}_${arch}.zip"
   local hpegl_dl_url="https://github.com/${repo}/releases/download/${VERSION}/${hpegl_zip}"
 
   mkdir -p "$dest_dir" && cd "$dest_dir"
@@ -24,5 +25,4 @@ download_and_extract () {
 
 VERSION=${VERSION:=$(get_latest_release)}
 version_number=${VERSION//v}
-echo "$version_number"
 download_and_extract
